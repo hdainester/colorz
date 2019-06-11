@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:ns="Chaotx.Mgx.Layout">
+    <Asset Type="SlidingPane" Id="gameOverSlider">
+        <GenericStart>Top</GenericStart>
+        <TravelTime>4000</TravelTime>
+        <TravelMode>Logarithmic</TravelMode>
+        <InitialState>SlidedOut</InitialState>
+        <HAlign>Center</HAlign>
+        <VAlign>Center</VAlign>
+        <Component Type="TextItem" Id="gameOverText">
+            <KeepAspectRatio>true</KeepAspectRatio>
+            <Font>fonts/large</Font>
+        </Component>
+    </Asset>
+</XnaContent>

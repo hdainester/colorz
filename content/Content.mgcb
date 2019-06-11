@@ -1,0 +1,73 @@
+
+#----------------------------- Global Properties ----------------------------#
+
+/outputDir:bin/$(Platform)
+/intermediateDir:obj/$(Platform)
+/platform:DesktopGL
+/config:
+/profile:Reach
+/compress:False
+
+#-------------------------------- References --------------------------------#
+
+/reference:..\libraries\mgx.dll
+/reference:..\libraries\mgx_pipe.dll
+
+#---------------------------------- Content ---------------------------------#
+
+#begin fonts/default.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:fonts/default.spritefont
+
+#begin fonts/large.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:fonts/large.spritefont
+
+#begin layout/gameoverslider.mgxml
+/importer:ComponentImporter
+/processor:PassThroughProcessor
+/build:layout/gameoverslider.mgxml
+
+#begin layout/gridpane.mgxml
+/importer:ComponentImporter
+/processor:PassThroughProcessor
+/build:layout/gridpane.mgxml
+
+#begin layout/gridslider.mgxml
+/importer:ComponentImporter
+/processor:PassThroughProcessor
+/build:layout/gridslider.mgxml
+
+#begin layout/homepane.mgxml
+/importer:ComponentImporter
+/processor:PassThroughProcessor
+/build:layout/homepane.mgxml
+
+#begin layout/menupane.mgxml
+/importer:ComponentImporter
+/processor:PassThroughProcessor
+/build:layout/menupane.mgxml
+
+#begin layout/menuslider.mgxml
+/importer:ComponentImporter
+/processor:PassThroughProcessor
+/build:layout/menuslider.mgxml
+
+#begin textures/blank.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:textures/blank.png
+

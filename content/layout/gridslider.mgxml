@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:ns="Chaotx.Mgx.Layout">
+    <Asset Type="SlidingPane" Id="gridSlider">
+        <HGrow>1</HGrow>
+        <VGrow>1</VGrow>
+        <HAlign>Center</HAlign>
+        <TravelMode>Logarithmic</TravelMode>
+        <InitialState>SlidedOut</InitialState>
+        <GenericStart>Bottom</GenericStart>
+        <Component Template="layout/gridpane" />
+    </Asset>
+</XnaContent>

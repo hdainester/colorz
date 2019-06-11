@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <Title>Colorz</Title>
+    <AssemblyName>Colorz</AssemblyName>
+    <Description>Multiplatform Simon Says Clone</Description>
+    <Authors>HDAinester</Authors>
+    <Copyright>Copyright © 2019</Copyright>
+    <PackageProjectUrl>https://github.com/hdainester/colorz</PackageProjectUrl>
+  </PropertyGroup>
+  <ItemGroup>
+    <MonoGameContentReference Include="..\..\content\Content.mgcb" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Content.Builder" Version="3.7.0.9" />
+    <PackageReference Include="MonoGame.Framework.DesktopGL.Core" Version="3.7.0.7"/>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Chaotx.Colorz">
+      <HintPath>../../game/bin/Debug/netstandard2.0/game.dll</HintPath>
+    </Reference>
+    <Reference Include="Chaotx.Mgx.Pipeline">
+      <HintPath>../../libraries/mgx_pipe.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>
