@@ -7,6 +7,6 @@
         <TravelMode>Logarithmic</TravelMode>
         <InitialState>SlidedOut</InitialState>
         <GenericStart>Bottom</GenericStart>
-        <Component Template="layout/gridpane" />
+        <Component Template="layout/panes/gridpane" />
     </Asset>
 </XnaContent>

@@ -1,25 +1,33 @@
-using System;
-using System.Collections.Generic;
-using Chaotx.Mgx.Controls;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
+
 using Chaotx.Mgx.Controls.Menus;
+using Chaotx.Mgx.Controls;
 using Chaotx.Mgx.Layout;
 using Chaotx.Mgx.Views;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+
+using System.Collections.Generic;
+using System.Linq;
+using System;
 
 namespace Chaotx.Colorz {
+    public enum Difficulty {
+        Easy, Medium, Hard
+    }
+
     public class SessionView : FadingView {
         public Session Session {get; private set;}
         public int ButtonFade {get;} = 300;
 
-        private GridPane grid;
+        // private GridPane grid;
+        private MenuItem mniExit;
+        private MenuItem mniStart;
         private TextItem gameOverText;
         private SlidingPane gridSlider;
         private SlidingPane menuSlider;
         private SlidingPane gameOverSlider;
+        private Random rng;
 
-        private int gridWidth = 3;
-        private int gridHeight = 3;
         private GenericPosition[] sides = {
             GenericPosition.Top,
             GenericPosition.Left,
@@ -33,17 +41,25 @@ namespace Chaotx.Colorz {
         };
 
         public SessionView(LayoutPane root)
-        : base (root) {}
+        : base (root) {rng = new Random();}
 
         protected override void Init() {
-            grid = GetItem<GridPane>("gridPane");
-            menuSlider = GetItem<SlidingPane>("menuSlider");
-            gridSlider = GetItem<SlidingPane>("gridSlider");
-            gameOverText = GetItem<TextItem>("gameOverText");
-            gameOverSlider = GetItem<SlidingPane>("gameOverSlider");
+            InitMenu();
+            InitGrids();
+            InitSlider();
+            // CreateSession(Difficulty.Easy, 2*ButtonFade + 100);
+        }
 
-            var mniStart = GetItem<MenuItem>("mniStart");
-            var mniExit = GetItem<MenuItem>("mniExit");
+        public override void Update(GameTime gameTime) {
+            base.Update(gameTime);
+
+            if(Session != null && Session.IsTalking)
+                Session.Say(gameTime);
+        }
+
+        private void InitMenu() {
+            mniStart = GetItem<MenuItem>("mniStart");
+            mniExit = GetItem<MenuItem>("mniExit");
 
             var oldStartCol = mniStart.TextItem.Color;
             var oldExitCol = mniExit.TextItem.Color;
@@ -55,15 +71,24 @@ namespace Chaotx.Colorz {
 
             mniExit.Action += (s, a) => Close();
             mniStart.Action += (s, a) => {
-                CreateSession(gridWidth, gridHeight, 2*ButtonFade + 100);
+                CreateSession(Difficulty.Easy, 2*ButtonFade + 100);
                 mniStart.IsDisabled = true;
                 mniExit.IsDisabled = true;
                 var pair = RandomPositionPair();
                 menuSlider.SlideOut(pair.Out);
                 gridSlider.SlideIn(pair.In);
             };
+        }
 
-            gridSlider.SlidedIn += (s, a) => Session.EvaluateNextTiles();
+        private void InitSlider() {
+            menuSlider = GetItem<SlidingPane>("menuSlider");
+            gridSlider = GetItem<SlidingPane>("gridSlider");
+            gameOverText = GetItem<TextItem>("gameOverText");
+            gameOverSlider = GetItem<SlidingPane>("gameOverSlider");
+
+            gridSlider.SlidedIn += (s, a) =>
+                Session.EvaluateNextTiles();
+
             gameOverSlider.SlidedIn += (s, a) => {
                 var pair = RandomPositionPair();
                 gameOverSlider.SlideOut(pair.Out);
@@ -74,48 +99,63 @@ namespace Chaotx.Colorz {
                 mniStart.IsDisabled = false;
                 mniExit.IsDisabled = false;
             };
-
-            CreateSession(gridWidth, gridHeight, 2*ButtonFade + 100);
         }
 
-        private void CreateSession(int w, int h, int t) {
-            var faders = new List<FadingPane>();
+        private void InitGrids() {
+            var sgrid = GetItem<GridPane>("smallGrid");
+            var mgrid = GetItem<GridPane>("mediumGrid");
+            var lgrid = GetItem<GridPane>("largeGrid");
+            var grids = new GridPane[] {sgrid, mgrid, lgrid};
+
+            foreach(var grid in grids)
+            for(int x, y = 0, i = 0; y < grid.GridHeight; ++y)
+            for(x = 0; x < grid.GridWidth; ++x, ++i) {
+                var cell = grid.Get(x, y) as StackPane;
+                var mni = cell.Children[0] as MenuItem;
+                var fader = cell.Children[1] as FadingPane;
+                var complete = false;
+                int index = i;
+
+                mni.ImageItem.Color = RandomColor();
+                mni.Action += (s, a) => {
+                    if(fader.State != FadingPaneState.FadedIn)
+                        return;
+
+                    if(Session.IsListening) {
+                        complete = Session.Listen(index);
+                        fader.FadeOut();
+                    }
+                };
+
+                fader.FadedOut += (s, a) => fader.FadeIn();
+                fader.FadedIn += (s, a) => {
+                    if(complete) {
+                        Session.EvaluateNextTiles();
+                        complete = false;
+                    }
+                };
+            }
+        }
+
+        private void CreateSession(Difficulty d, int t) {
+            var gid = d == Difficulty.Easy
+                ? "smallGrid": d == Difficulty.Medium
+                ? "mediumGrid" : "largeGrid";
+
+            var grid = GetItem<GridPane>(gid);
+            var gpane = GetItem<StackPane>("gridPane");
+            gpane.Clear();
+            gpane.Add(grid);
+
+            int w = grid.GridWidth;
+            int h = grid.GridHeight;
             Session = new Session(w, h, t);
 
-            for(int x, y = 0, i = 0; y < h; ++y) {
-                for(x = 0; x < w; ++x, ++i) {
-                    var cell = CreateCell();
-                    var mni = cell.Children[0] as MenuItem;
-                    var fader = cell.Children[1] as FadingPane;
-                    int index = i;
-
-                    bool complete = false;
-                    mni.ImageItem.Color = RandomColor();
-                    mni.Action += (s, a) => {
-                        if(fader.State != FadingPaneState.FadedIn)
-                            return;
-
-                        if(Session.IsListening) {
-                            complete = Session.Listen(index);
-                            fader.FadeOut();
-                        }
-                    };
-
-                    fader.FadedOut += (s, a) => fader.FadeIn();
-                    fader.FadedIn += (s, a) => {
-                        if(complete) {
-                            Session.EvaluateNextTiles();
-                            complete = false;
-                        }
-                    };
-
-                    faders.Add(fader);
-                    grid.Set(x, y, cell);
-                }
-            }
-
             Session.NewIndex += (s, a) => {
-                faders[a.Index].FadeOut();
+                int y = a.Index/grid.GridWidth;
+                int x = a.Index%grid.GridWidth;
+                var fader = (grid.Get(x, y) as StackPane).Children[1] as FadingPane;
+                fader.FadeOut();
                 Console.WriteLine("Session says " + a.Index);
             };
 
@@ -123,51 +163,16 @@ namespace Chaotx.Colorz {
                 var pair = RandomPositionPair();
                 gridSlider.SlideOut(pair.Out);
                 gameOverSlider.SlideIn(pair.In);
-                gameOverText.Text = string.Format("GameOver after {0} turns", a.Turns);
-                Console.WriteLine(string.Format("GameOver after {0} turns", a.Turns));
+                gameOverText.Text = string.Format("GameOver after {0} turn{1}", a.Turns, a.Turns == 1 ? "" : "s");
+                Console.WriteLine(string.Format("GameOver after {0} turn{1}", a.Turns, a.Turns == 1 ? "" : "s"));
             };
-        }
-
-        public override void Update(GameTime gameTime) {
-            base.Update(gameTime);
-
-            if(Session.IsTalking)
-                Session.Say(gameTime);
-        }
-
-        private StackPane CreateCell() {
-            var bln = Content.Load<Texture2D>("textures/blank");
-            var mni = new MenuItem(bln);
-            mni.HGrow = mni.VGrow = 1;
-            // mni.ImageItem.KeepAspectRatio = true;
-            mni.ImageItem.HAlign = HAlignment.Center;
-            mni.ImageItem.VAlign = VAlignment.Center;
-            mni.FocusEffect = false;
-
-            var imi = new ImageItem(bln);
-            imi.HGrow = imi.VGrow = 1;
-            // imi.KeepAspectRatio = true;
-            imi.Color = Color.Black;
-            imi.HAlign = HAlignment.Center;
-            imi.VAlign = VAlignment.Center;
-            imi.Alpha = 0.5f;
-
-            var fad = new FadingPane(-1, FadingPaneState.FadedIn);
-            fad.FadeInTime = ButtonFade;
-            fad.FadeOutTime = ButtonFade;
-            fad.HGrow = fad.VGrow = 1;
-            fad.Add(imi);
-
-            var stk = new StackPane(mni, fad);
-            stk.HGrow = stk.VGrow = 1;
-            return stk;
         }
 
         private Color RandomColor() {
             return Color.FromNonPremultiplied(
-                Session.Rng.Next(255) + 1,
-                Session.Rng.Next(255) + 1,
-                Session.Rng.Next(255) + 1, 255);
+                rng.Next(255) + 1,
+                rng.Next(255) + 1,
+                rng.Next(255) + 1, 255);
         }
 
         private PositionPair RandomPositionPair() {

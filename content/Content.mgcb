@@ -29,35 +29,55 @@
 /processorParam:TextureFormat=Compressed
 /build:fonts/large.spritefont
 
-#begin layout/gameoverslider.mgxml
+#begin layout/grids/largegrid.mgxml
 /importer:ComponentImporter
 /processor:PassThroughProcessor
-/build:layout/gameoverslider.mgxml
+/build:layout/grids/largegrid.mgxml
 
-#begin layout/gridpane.mgxml
+#begin layout/grids/mediumgrid.mgxml
 /importer:ComponentImporter
 /processor:PassThroughProcessor
-/build:layout/gridpane.mgxml
+/build:layout/grids/mediumgrid.mgxml
 
-#begin layout/gridslider.mgxml
+#begin layout/grids/smallgrid.mgxml
 /importer:ComponentImporter
 /processor:PassThroughProcessor
-/build:layout/gridslider.mgxml
+/build:layout/grids/smallgrid.mgxml
 
-#begin layout/homepane.mgxml
+#begin layout/panes/gridpane.mgxml
 /importer:ComponentImporter
 /processor:PassThroughProcessor
-/build:layout/homepane.mgxml
+/build:layout/panes/gridpane.mgxml
 
-#begin layout/menupane.mgxml
+#begin layout/panes/homepane.mgxml
 /importer:ComponentImporter
 /processor:PassThroughProcessor
-/build:layout/menupane.mgxml
+/build:layout/panes/homepane.mgxml
 
-#begin layout/menuslider.mgxml
+#begin layout/panes/menupane.mgxml
 /importer:ComponentImporter
 /processor:PassThroughProcessor
-/build:layout/menuslider.mgxml
+/build:layout/panes/menupane.mgxml
+
+#begin layout/slider/gameoverslider.mgxml
+/importer:ComponentImporter
+/processor:PassThroughProcessor
+/build:layout/slider/gameoverslider.mgxml
+
+#begin layout/slider/gridslider.mgxml
+/importer:ComponentImporter
+/processor:PassThroughProcessor
+/build:layout/slider/gridslider.mgxml
+
+#begin layout/slider/menuslider.mgxml
+/importer:ComponentImporter
+/processor:PassThroughProcessor
+/build:layout/slider/menuslider.mgxml
+
+#begin layout/templates/tile.mgxml
+/importer:ComponentImporter
+/processor:PassThroughProcessor
+/build:layout/templates/tile.mgxml
 
 #begin textures/blank.png
 /importer:TextureImporter

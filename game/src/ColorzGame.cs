@@ -26,7 +26,7 @@ namespace Chaotx.Colorz {
 
         protected override void LoadContent() {
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            var homePane = Content.Load<StackPane>("layout/homepane");
+            var homePane = Content.Load<StackPane>("layout/panes/homepane");
             viewManager.Add(new SessionView(homePane));
             base.LoadContent();
         }

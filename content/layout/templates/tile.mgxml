@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:ns="Chaotx.Mgx.StackPane">
+    <Asset Type="StackPane">
+        <HGrow>1</HGrow>
+        <VGrow>1</VGrow>
+
+        <Component Type="MenuItem">
+            <HGrow>1</HGrow><VGrow>1</VGrow>
+            <FocusEffect>false</FocusEffect>
+            <ImageItem>
+                <HGrow>1</HGrow><VGrow>1</VGrow>
+                <Image>textures/blank</Image>
+            </ImageItem>
+        </Component>
+
+        <Component Type="FadingPane">
+            <FadeInTime>300</FadeInTime>
+            <FadeOutTime>300</FadeOutTime>
+            <HGrow>1</HGrow><VGrow>1</VGrow>
+            <InitialState>FadedIn</InitialState>
+            <Component Type="ImageItem">
+                <HGrow>1</HGrow><VGrow>1</VGrow>
+                <Image>textures/blank</Image>
+                <Color>0 0 0</Color>
+                <Alpha>0.5</Alpha>
+            </Component>
+        </Component>
+    </Asset>
+</XnaContent>

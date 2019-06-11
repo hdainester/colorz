@@ -30,13 +30,13 @@ restore-desktop:
 	cd platforms/desktop; dotnet restore
 
 clean-bin:
-	find . -type d -name "bin" -exec rm -rv {} +
+	find . -type d -name "bin" -exec rm -rfv {} +
 
 clean-obj:
-	find . -type d -name "obj" -exec rm -rv {} +
+	find . -type d -name "obj" -exec rm -rfv {} +
 
 clean-tmp:
-	find . -type f -name "*.template" -exec rm -rv {} +
+	find . -type f -name "*.template" -exec rm -rfv {} +
 
 restore: restore-game restore-desktop
 clean: clean-bin clean-tmp clean-obj

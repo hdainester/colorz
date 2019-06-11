@@ -6,6 +6,6 @@
         <TravelMode>Logarithmic</TravelMode>
         <InitialState>SlidingIn</InitialState>
         <GenericStart>Right</GenericStart>
-        <Component Template="layout/menupane" />
+        <Component Template="layout/panes/menupane" />
     </Asset>
 </XnaContent>
