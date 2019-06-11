@@ -2,6 +2,11 @@
 .vscode
 .settings
 
+## vs
+*.csproj.user
+*.vs
+*.sln
+
 ## build
 *.template
 bin
