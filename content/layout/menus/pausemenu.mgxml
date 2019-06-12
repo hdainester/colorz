@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:ns="Chaotx.Mgx.Layout">
+    <Asset Type="HPane" Id="pauseMenu">
+        <HGrow>1</HGrow>
+        <VAlign>Center</VAlign>
+        <!-- <ItemsOrientation>Horizontal</ItemsOrientation> -->
+
+        <Component Type="MenuItem" Id="itmYes">
+            <HAlign>Left</HAlign>
+            <TextItem>
+                <Font>fonts/large</Font>
+                <Text>Yes</Text>
+            </TextItem>
+        </Component>
+
+        <Component Type="MenuItem" Id="itmNo">
+            <HAlign>Right</HAlign>
+            <TextItem>
+                <Font>fonts/large</Font>
+                <Text>No</Text>
+            </TextItem>
+        </Component>
+    </Asset>
+</XnaContent>

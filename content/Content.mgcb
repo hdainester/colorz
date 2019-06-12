@@ -44,6 +44,21 @@
 /processor:PassThroughProcessor
 /build:layout/grids/smallgrid.mgxml
 
+#begin layout/menus/diffmenu.mgxml
+/importer:ComponentImporter
+/processor:PassThroughProcessor
+/build:layout/menus/diffmenu.mgxml
+
+#begin layout/menus/mainmenu.mgxml
+/importer:ComponentImporter
+/processor:PassThroughProcessor
+/build:layout/menus/mainmenu.mgxml
+
+#begin layout/menus/pausemenu.mgxml
+/importer:ComponentImporter
+/processor:PassThroughProcessor
+/build:layout/menus/pausemenu.mgxml
+
 #begin layout/panes/gridpane.mgxml
 /importer:ComponentImporter
 /processor:PassThroughProcessor
@@ -54,10 +69,10 @@
 /processor:PassThroughProcessor
 /build:layout/panes/homepane.mgxml
 
-#begin layout/panes/menupane.mgxml
+#begin layout/panes/pausepane.mgxml
 /importer:ComponentImporter
 /processor:PassThroughProcessor
-/build:layout/panes/menupane.mgxml
+/build:layout/panes/pausepane.mgxml
 
 #begin layout/slider/gameoverslider.mgxml
 /importer:ComponentImporter
@@ -73,6 +88,11 @@
 /importer:ComponentImporter
 /processor:PassThroughProcessor
 /build:layout/slider/menuslider.mgxml
+
+#begin layout/templates/backfader.mgxml
+/importer:ComponentImporter
+/processor:PassThroughProcessor
+/build:layout/templates/backfader.mgxml
 
 #begin layout/templates/tile.mgxml
 /importer:ComponentImporter

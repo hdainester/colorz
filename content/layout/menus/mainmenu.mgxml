@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<XnaContent xmlns:ns="Chaotx.Mgx.Layout">
-    <Asset Type="VPane" Id="menuPane">
+<XnaContent xmlns:ns="Chaotx.Mgx.Controls.Menus">
+    <Asset Type="VPane" Id="mainMenu">
         <HAlign>Center</HAlign>
         <VAlign>Center</VAlign>
 
-        <Component Type="MenuItem" Id="mniStart">
+        <Component Type="MenuItem" Id="itmStart">
             <TextItem>
                 <Font>fonts/large</Font>
                 <Text>Start Game</Text>
             </TextItem>
         </Component>
 
-        <Component Type="MenuItem" Id="mniExit">
+        <Component Template="layout/menus/diffmenu" Id="itmDiff" />
+
+        <Component Type="MenuItem" Id="itmExit">
             <TextItem>
                 <Font>fonts/large</Font>
                 <Text>Exit</Text>

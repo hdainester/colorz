@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:ns="Chaotx.Mgx.Layout">
+    <Asset Type="FadingPane">
+        <FadeInTime>500</FadeInTime>
+        <FadeOutTime>500</FadeOutTime>
+        <HGrow>1</HGrow><VGrow>1</VGrow>
+        <InitialState>FadingIn</InitialState>
+
+        <Component Type="ImageItem">
+            <HGrow>1</HGrow><VGrow>1</VGrow>
+            <Image>textures/blank</Image>
+            <Color>0 0 0</Color>
+            <Alpha>0.5</Alpha>
+        </Component>
+    </Asset>
+</XnaContent>

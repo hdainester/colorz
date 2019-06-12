@@ -9,23 +9,27 @@ using Chaotx.Mgx.Views;
 using System.Collections.Generic;
 using System.Linq;
 using System;
+using Microsoft.Xna.Framework.Input;
+using Chaotx.Mgx;
 
 namespace Chaotx.Colorz {
     public enum Difficulty {
         Easy, Medium, Hard
     }
 
+    internal struct PositionPair {
+        public GenericPosition In {get; set;}
+        public GenericPosition Out {get; set;}
+    };
+
     public class SessionView : FadingView {
         public Session Session {get; private set;}
         public int ButtonFade {get;} = 300;
 
-        // private GridPane grid;
-        private MenuItem mniExit;
-        private MenuItem mniStart;
-        private TextItem gameOverText;
-        private SlidingPane gridSlider;
-        private SlidingPane menuSlider;
+        internal SlidingPane gridSlider;
+        internal SlidingPane menuSlider;
         private SlidingPane gameOverSlider;
+        private Difficulty difficulty;
         private Random rng;
 
         private GenericPosition[] sides = {
@@ -35,19 +39,30 @@ namespace Chaotx.Colorz {
             GenericPosition.Right
         };
 
-        struct PositionPair {
-            public GenericPosition In {get; set;}
-            public GenericPosition Out {get; set;}
-        };
-
         public SessionView(LayoutPane root)
-        : base (root) {rng = new Random();}
+        : base (root) {
+            difficulty = Difficulty.Easy;
+            rng = new Random();
+        }
 
         protected override void Init() {
             InitMenu();
             InitGrids();
             InitSlider();
-            // CreateSession(Difficulty.Easy, 2*ButtonFade + 100);
+        }
+
+        protected override void HandleInput() {
+            base.HandleInput();
+            var keyboard = Keyboard.GetState();
+
+            if((keyboard.IsKeyPressed(Keys.Escape)
+            || keyboard.IsKeyPressed(Keys.Back))
+            && gridSlider.State == SlidingPaneState.SlidedIn) {
+                var rootPane = Content.Load<StackPane>("layout/panes/pausepane");
+                var pauseView = new PauseView(rootPane, this);
+                Manager.Add(pauseView, false);
+                InputDisabled = true;
+            }
         }
 
         public override void Update(GameTime gameTime) {
@@ -58,22 +73,60 @@ namespace Chaotx.Colorz {
         }
 
         private void InitMenu() {
-            mniStart = GetItem<MenuItem>("mniStart");
-            mniExit = GetItem<MenuItem>("mniExit");
+            var mniStart = GetItem<MenuItem>("itmStart");
+            var mniExit = GetItem<MenuItem>("itmExit");
+            var arrLeft = GetItem<MenuItem>("itmLeft");
+            var arrRight = GetItem<MenuItem>("itmRight");
+
+            var diffContent = GetItem<HPane>("diffContent");
+            var itmEasy = GetItem<TextItem>("itmEasy");
+            var itmMedium = GetItem<TextItem>("itmMedium");
+            var itmHard = GetItem<TextItem>("itmHard");
+            diffContent.Clear();
+            diffContent.Add(itmEasy);
 
             var oldStartCol = mniStart.TextItem.Color;
             var oldExitCol = mniExit.TextItem.Color;
+            var oldLeftCol = arrLeft.TextItem.Color;
+            var oldRightCol = arrRight.TextItem.Color;
 
             mniStart.FocusGain += (s, a) => mniStart.TextItem.Color = Color.Yellow;
             mniStart.FocusLoss += (s, a) => mniStart.TextItem.Color = oldStartCol;
             mniExit.FocusGain += (s, a) => mniExit.TextItem.Color = Color.Yellow;
             mniExit.FocusLoss += (s, a) => mniExit.TextItem.Color = oldExitCol;
+            arrLeft.FocusGain += (s, a) => arrLeft.TextItem.Color = Color.Yellow;
+            arrLeft.FocusLoss += (s, a) => arrLeft.TextItem.Color = oldLeftCol;
+            arrRight.FocusGain += (s, a) => arrRight.TextItem.Color = Color.Yellow;
+            arrRight.FocusLoss += (s, a) => arrRight.TextItem.Color = oldLeftCol;
+            arrLeft.Disabled += (s, a) => arrLeft.Alpha = 0.5f;
+            arrLeft.Enabled += (s, a) => arrLeft.Alpha = 1f;
+            arrRight.Disabled += (s, a) => arrRight.Alpha = 0.5f;
+            arrRight.Enabled += (s, a) => arrRight.Alpha = 1f;
+
+            arrLeft.IsDisabled = true;
+            arrLeft.Action += (s, a) => {
+                difficulty -= 1;
+                diffContent.Clear();
+                diffContent.Add(difficulty == Difficulty.Easy
+                    ? itmEasy : difficulty == Difficulty.Medium
+                    ? itmMedium : itmHard);
+                arrLeft.IsDisabled = difficulty == Difficulty.Easy;
+                arrRight.IsDisabled = difficulty == Difficulty.Hard;
+            };
+
+            arrRight.Action += (s, a) => {
+                difficulty += 1;
+                diffContent.Clear();
+                diffContent.Add(difficulty == Difficulty.Easy
+                    ? itmEasy : difficulty == Difficulty.Medium
+                    ? itmMedium : itmHard);
+                arrRight.IsDisabled = difficulty == Difficulty.Hard;
+                arrLeft.IsDisabled = difficulty == Difficulty.Easy;
+            };
 
             mniExit.Action += (s, a) => Close();
             mniStart.Action += (s, a) => {
-                CreateSession(Difficulty.Easy, 2*ButtonFade + 100);
-                mniStart.IsDisabled = true;
-                mniExit.IsDisabled = true;
+                CreateSession(difficulty, 2*ButtonFade + 100);
                 var pair = RandomPositionPair();
                 menuSlider.SlideOut(pair.Out);
                 gridSlider.SlideIn(pair.In);
@@ -83,7 +136,6 @@ namespace Chaotx.Colorz {
         private void InitSlider() {
             menuSlider = GetItem<SlidingPane>("menuSlider");
             gridSlider = GetItem<SlidingPane>("gridSlider");
-            gameOverText = GetItem<TextItem>("gameOverText");
             gameOverSlider = GetItem<SlidingPane>("gameOverSlider");
 
             gridSlider.SlidedIn += (s, a) =>
@@ -93,11 +145,6 @@ namespace Chaotx.Colorz {
                 var pair = RandomPositionPair();
                 gameOverSlider.SlideOut(pair.Out);
                 menuSlider.SlideIn(pair.In);
-            };
-
-            menuSlider.SlidedIn += (s, a) => {
-                mniStart.IsDisabled = false;
-                mniExit.IsDisabled = false;
             };
         }
 
@@ -144,6 +191,7 @@ namespace Chaotx.Colorz {
 
             var grid = GetItem<GridPane>(gid);
             var gpane = GetItem<StackPane>("gridPane");
+            var gameOverText = GetItem<TextItem>("gameOverText");
             gpane.Clear();
             gpane.Add(grid);
 
@@ -175,7 +223,7 @@ namespace Chaotx.Colorz {
                 rng.Next(255) + 1, 255);
         }
 
-        private PositionPair RandomPositionPair() {
+        internal PositionPair RandomPositionPair() {
             PositionPair pair = new PositionPair();
             var r = Session.Rng.Next(sides.Length);
             pair.In = sides[r];

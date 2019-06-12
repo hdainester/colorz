@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:ns="Chaotx.Mgx.Layout">
+    <Asset Type="StackPane">
+        <HGrow>1</HGrow><VGrow>1</VGrow>
+        <Component Template="layout/templates/backfader" Id="pauseFader" />
+
+        <Component Type="SlidingPane" Id="pauseSlider">
+            <VGrow>1</VGrow>
+            <HAlign>Center</HAlign>
+            <TravelTime>1500</TravelTime>
+            <TravelMode>Logarithmic</TravelMode>
+            <InitialState>SlidingIn</InitialState>
+            <GenericStart>Bottom</GenericStart>
+
+            <Component Type="TextItem" Id="pauseMessage">
+                <Font>fonts/large</Font>
+                <Text>Quit Game?</Text>
+            </Component>
+
+            <Component Template="layout/menus/pausemenu" />
+        </Component>
+    </Asset>
+</XnaContent>

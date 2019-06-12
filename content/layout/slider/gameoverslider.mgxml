@@ -8,7 +8,7 @@
         <HAlign>Center</HAlign>
         <VAlign>Center</VAlign>
         <Component Type="TextItem" Id="gameOverText">
-            <KeepAspectRatio>true</KeepAspectRatio>
+            <!-- <KeepAspectRatio>true</KeepAspectRatio> -->
             <Font>fonts/large</Font>
         </Component>
     </Asset>

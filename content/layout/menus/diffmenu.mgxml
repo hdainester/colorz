@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<XnaContent xmlns:ns="Chaotx.Mgx.Layout">
+    <Asset Type="HPane" Id="diffMenu">
+        <HGrow>1</HGrow>
+        <VAlign>Center</VAlign>
+        <!-- <ItemsOrientation>Horizontal</ItemsOrientation> -->
+
+        <Component Type="MenuItem" Id="itmLeft">
+            <HAlign>Left</HAlign>
+            <TextItem>
+                <Font>fonts/large</Font>
+                <Text>-</Text>
+            </TextItem>
+        </Component>
+
+        <Component Type="HPane" Id="diffContent">
+            <HAlign>Center</HAlign>
+            <Component Type="TextItem" Id="itmEasy">
+                <Text>Easy</Text>
+                <Font>fonts/large</Font>
+            </Component>
+            <Component Type="TextItem" Id="itmMedium">
+                <Text>Medium</Text>
+                <Font>fonts/large</Font>
+            </Component>
+            <Component Type="TextItem" Id="itmHard">
+                <Text>Hard</Text>
+                <Font>fonts/large</Font>
+            </Component>
+        </Component>
+
+        <Component Type="MenuItem" Id="itmRight">
+            <HAlign>Right</HAlign>
+            <TextItem>
+                <Font>fonts/large</Font>
+                <Text>+</Text>
+            </TextItem>
+        </Component>
+    </Asset>
+</XnaContent>

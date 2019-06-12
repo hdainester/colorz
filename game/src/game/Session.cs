@@ -26,12 +26,14 @@ namespace Chaotx.Colorz {
         public bool IsTalking {get; private set;}
         public bool IsListening {get; private set;}
         public bool IsRunning {get; private set;}
+        public bool Suspended {get; private set;}
         public int IdleTime {get; set;}
 
         public event GameOverHandler GameOver;
         public event NewIndexHandler NewIndex;
 
         private bool newIndex;
+        private bool wasTalking, wasListening;
         private List<int> nextTiles;
         private int nextTileCount, index;
         private int timer;
@@ -81,7 +83,7 @@ namespace Chaotx.Colorz {
         }
 
         public bool Listen(int tileIndex) {
-            if(!IsListening) return false;
+            if(!IsListening || Suspended) return false;
 
             if(!tileIndex.Equals(nextTiles[index++])) {
                 IsListening = false;
@@ -93,6 +95,26 @@ namespace Chaotx.Colorz {
                 return !(IsListening = false);
 
             return false;
+        }
+
+        public void Suspend() {
+            Suspended = true;
+            wasTalking = IsTalking;
+            wasListening = IsListening;
+        }
+
+        public void Resume() {
+            Suspended = false;
+
+            if(!wasTalking || wasTalking && IsTalking)
+                IsListening = wasListening;
+
+            if(!IsTalking && !IsListening)
+                EvaluateNextTiles();
+        }
+
+        public void Stop() {
+            IsListening = IsTalking = false;
         }
 
         protected virtual void OnNewIndex(int index) {

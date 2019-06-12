@@ -20,7 +20,7 @@ win-exe: game
 osx-exe: game
 	cd platforms/desktop; dotnet publish -c Release -r osx-x64 --self-contained false
 
-game: restore
+game: clean
 	cd game; dotnet build;
 
 restore-game: clean
