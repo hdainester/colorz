@@ -11,6 +11,8 @@ namespace Chaotx.Colorz {
         private ViewManager viewManager;
         private Session session;
 
+        public event EventHandler GameFinished;
+
         public ColorzGame() {
             Content.RootDirectory = "../content";
             IsMouseVisible = true;
@@ -32,7 +34,11 @@ namespace Chaotx.Colorz {
         }
 
         protected override void Update(GameTime gameTime) {
-            if(viewManager.Views.Count == 0) Exit();
+            if(viewManager.Views.Count == 0) {
+                OnGameFinished();
+                Exit();
+            }
+
             viewManager.Update(gameTime);
             base.Update(gameTime);
         }
@@ -41,6 +47,11 @@ namespace Chaotx.Colorz {
             GraphicsDevice.Clear(Color.Black);
             viewManager.Draw(spriteBatch);
             base.Draw(gameTime);
+        }
+
+        protected virtual void OnGameFinished(EventArgs args = null) {
+            var handler = GameFinished;
+            if(handler != null) handler(this, args);
         }
     }
 }
