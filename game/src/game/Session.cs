@@ -1,6 +1,8 @@
+using Microsoft.Xna.Framework;
+using Chaotx.Mgx.Layout;
+
 using System.Collections.Generic;
 using System;
-using Microsoft.Xna.Framework;
 
 namespace Chaotx.Colorz {
     public delegate void GameOverHandler (Session obj, GameOverEventArgs args);
@@ -28,6 +30,7 @@ namespace Chaotx.Colorz {
         public bool IsRunning {get; private set;}
         public bool Suspended {get; private set;}
         public int IdleTime {get; set;}
+        public GridPane Grid {get;}
 
         public event GameOverHandler GameOver;
         public event NewIndexHandler NewIndex;
@@ -38,9 +41,10 @@ namespace Chaotx.Colorz {
         private int nextTileCount, index;
         private int timer;
 
-        public Session(int width = 2, int height = 2, int activeTime = 1000) {
+        public Session(int width = 2, int height = 2, int activeTime = 1000, GridPane grid = null) {
             Width = width;
             Height = height;
+            Grid = grid;
             Rng = new Random();
             nextTiles = new List<int>();
             nextTileCount = 0;

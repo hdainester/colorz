@@ -2,7 +2,7 @@
 <XnaContent xmlns:ns="Chaotx.Mgx.Layout">
     <Asset Type="SlidingPane" Id="gameOverSlider">
         <GenericStart>Top</GenericStart>
-        <TravelTime>4000</TravelTime>
+        <TravelTime>2500</TravelTime>
         <TravelMode>Logarithmic</TravelMode>
         <InitialState>SlidedOut</InitialState>
         <HAlign>Center</HAlign>

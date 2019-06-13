@@ -18,10 +18,10 @@ namespace Chaotx.Colorz {
             viewManager = new ViewManager(Content, graphics);
             session = new Session();
 
-            // graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-            // graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
-            // graphics.HardwareModeSwitch = false;
-            // graphics.IsFullScreen = true;
+            graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            graphics.HardwareModeSwitch = false;
+            graphics.IsFullScreen = true;
         }
 
         protected override void LoadContent() {

@@ -7,7 +7,7 @@
         <Component Type="SlidingPane" Id="pauseSlider">
             <VGrow>1</VGrow>
             <HAlign>Center</HAlign>
-            <TravelTime>1500</TravelTime>
+            <TravelTime>500</TravelTime>
             <TravelMode>Logarithmic</TravelMode>
             <InitialState>SlidingIn</InitialState>
             <GenericStart>Bottom</GenericStart>

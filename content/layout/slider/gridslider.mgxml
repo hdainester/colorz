@@ -4,6 +4,7 @@
         <HGrow>1</HGrow>
         <VGrow>1</VGrow>
         <HAlign>Center</HAlign>
+        <TravelTime>1500</TravelTime>
         <TravelMode>Logarithmic</TravelMode>
         <InitialState>SlidedOut</InitialState>
         <GenericStart>Bottom</GenericStart>

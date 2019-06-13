@@ -1,11 +1,16 @@
+using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework;
+
 using Chaotx.Mgx.Controls.Menus;
 using Chaotx.Mgx.Layout;
 using Chaotx.Mgx.Views;
-using Microsoft.Xna.Framework;
+using Chaotx.Mgx;
 
 namespace Chaotx.Colorz {
     public class PauseView : FadingView {
         private SessionView parent;
+        private SlidingPane slider;
+        private FadingPane fader;
 
         public PauseView(LayoutPane root, SessionView parent) : base(root) {
             FadeInTime = FadeOutTime = 0;
@@ -16,8 +21,8 @@ namespace Chaotx.Colorz {
             var mniYes = GetItem<MenuItem>("itmYes");
             var mniNo = GetItem<MenuItem>("itmNo");
 
-            var slider = GetItem<SlidingPane>("pauseSlider");
-            var fader = GetItem<FadingPane>("pauseFader");
+            slider = GetItem<SlidingPane>("pauseSlider");
+            fader = GetItem<FadingPane>("pauseFader");
 
             slider.SlideIn(GenericPosition.Bottom);
             fader.FadeIn();
@@ -41,9 +46,7 @@ namespace Chaotx.Colorz {
             };
 
             mniYes.Action += (s, a) => {
-                var pair = parent.RandomPositionPair();
-                parent.gridSlider.SlideOut(pair.Out);
-                parent.menuSlider.SlideIn(pair.In);
+                parent.StopSession();
                 slider.SlideOut(GenericPosition.Top);
                 fader.FadeOut();
             };
@@ -52,6 +55,18 @@ namespace Chaotx.Colorz {
                 parent.InputDisabled = false;
                 Close();
             };
+        }
+
+        protected override void HandleInput() {
+            base.HandleInput();
+            var keyboard = Keyboard.GetState();
+
+            if(slider.State == SlidingPaneState.SlidedIn
+            && (keyboard.IsKeyPressed(Keys.Escape)
+            || keyboard.IsKeyPressed(Keys.Back))) {
+                slider.SlideOut(GenericPosition.Top);
+                fader.FadeOut();
+            }
         }
     }
 }

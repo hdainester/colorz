@@ -2,6 +2,11 @@
 <XnaContent xmlns:ns="Chaotx.Mgx.Layout">
     <Asset Type="StackPane" Id="homePane">
         <HGrow>1</HGrow><VGrow>1</VGrow>
+        <Component Type="ImageItem">
+            <HGrow>1</HGrow>
+            <VGrow>1</VGrow>
+            <Image>textures/back</Image>
+        </Component>
         <Component Template="layout/slider/menuslider" />
         <Component Template="layout/slider/gridslider" />
         <Component Template="layout/slider/gameoverslider" />

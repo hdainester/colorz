@@ -3,6 +3,7 @@
     <Asset Type="SlidingPane" Id="menuSlider">
         <VGrow>1</VGrow>
         <HAlign>Center</HAlign>
+        <TravelTime>1250</TravelTime>
         <TravelMode>Logarithmic</TravelMode>
         <InitialState>SlidingIn</InitialState>
         <GenericStart>Right</GenericStart>
