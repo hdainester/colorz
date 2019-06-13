@@ -17,6 +17,7 @@ namespace Chaotx.Colorz.Android {
             base.OnCreate(bundle);
             var g = new ColorzGame();
             SetContentView((View)g.Services.GetService(typeof(View)));
+            g.GameFinished += (s, a) => Process.KillProcess(Process.MyPid());
             g.Run();
         }
     }
