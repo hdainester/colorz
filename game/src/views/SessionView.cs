@@ -23,9 +23,12 @@ namespace Chaotx.Colorz {
         public Session Session {get; private set;}
         public int ButtonFade {get; private set;}
 
+        private StackPane gridPane;
+        private GridPane activeGrid;
         private SlidingPane gridSlider;
         private SlidingPane menuSlider;
         private SlidingPane gameOverSlider;
+        private TextItem gameOverText;
         private Difficulty difficulty;
         private Random rng;
 
@@ -38,7 +41,6 @@ namespace Chaotx.Colorz {
 
         public SessionView(LayoutPane root)
         : base (root) {
-            difficulty = Difficulty.Easy;
             rng = new Random();
         }
 
@@ -73,7 +75,7 @@ namespace Chaotx.Colorz {
             int level = (int)difficulty;
             ButtonFade = 350 - level*50;
             CreateSession(difficulty, 2*ButtonFade + (2-level)*50);
-            RandomizeGrid(Session.Grid);
+            RandomizeGrid(activeGrid);
             var pair = RandomPositionPair();
             menuSlider.SlideOut(pair.Out);
             gridSlider.SlideIn(pair.In);
@@ -160,6 +162,9 @@ namespace Chaotx.Colorz {
         }
 
         private void InitGrids() {
+            gameOverText = GetItem<TextItem>("gameOverText");
+            gridPane = GetItem<StackPane>("gridPane");
+
             var sgrid = GetItem<GridPane>("smallGrid");
             var mgrid = GetItem<GridPane>("mediumGrid");
             var lgrid = GetItem<GridPane>("largeGrid");
@@ -200,26 +205,24 @@ namespace Chaotx.Colorz {
                 ? "smallGrid": d == Difficulty.Medium
                 ? "mediumGrid" : "largeGrid";
 
-            var grid = GetItem<GridPane>(gid);
-            var gpane = GetItem<StackPane>("gridPane");
-            var gameOverText = GetItem<TextItem>("gameOverText");
-            gpane.Clear();
-            gpane.Add(grid);
+            activeGrid = GetItem<GridPane>(gid);
+            gridPane.Clear();
+            gridPane.Add(activeGrid);
 
-            int w = grid.GridWidth;
-            int h = grid.GridHeight;
-            Session = new Session(w, h, t, grid);
+            int w = activeGrid.GridWidth;
+            int h = activeGrid.GridHeight;
+            Session = new Session(w, h, t);
 
             for(int x, y = 0; y < h; ++y)
             for(x = 0; x < w; ++x){
-                var fader = (grid.Get(x, y) as LayoutPane).Children[1] as FadingPane;
+                var fader = (activeGrid.Get(x, y) as LayoutPane).Children[1] as FadingPane;
                 fader.FadeInTime = fader.FadeOutTime = ButtonFade;
             }
 
             Session.NewIndex += (s, a) => {
-                int y = a.Index/grid.GridWidth;
-                int x = a.Index%grid.GridWidth;
-                var fader = (grid.Get(x, y) as StackPane).Children[1] as FadingPane;
+                int y = a.Index/activeGrid.GridWidth;
+                int x = a.Index%activeGrid.GridWidth;
+                var fader = (activeGrid.Get(x, y) as StackPane).Children[1] as FadingPane;
                 fader.FadeOut();
                 Console.WriteLine("Session says " + a.Index);
             };

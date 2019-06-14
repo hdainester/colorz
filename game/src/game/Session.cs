@@ -30,7 +30,6 @@ namespace Chaotx.Colorz {
         public bool IsRunning {get; private set;}
         public bool Suspended {get; private set;}
         public int IdleTime {get; set;}
-        public GridPane Grid {get;}
 
         public event GameOverHandler GameOver;
         public event NewIndexHandler NewIndex;
@@ -41,10 +40,9 @@ namespace Chaotx.Colorz {
         private int nextTileCount, index;
         private int timer;
 
-        public Session(int width = 2, int height = 2, int activeTime = 1000, GridPane grid = null) {
+        public Session(int width = 2, int height = 2, int activeTime = 1000) {
             Width = width;
             Height = height;
-            Grid = grid;
             Rng = new Random();
             nextTiles = new List<int>();
             nextTileCount = 0;

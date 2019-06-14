@@ -1,15 +1,16 @@
-using System;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework;
+
 using Chaotx.Mgx.Layout;
 using Chaotx.Mgx.Views;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+
+using System;
 
 namespace Chaotx.Colorz {
     public class ColorzGame : Game {
         private SpriteBatch spriteBatch;
         private GraphicsDeviceManager graphics;
         private ViewManager viewManager;
-        private Session session;
 
         public event EventHandler GameFinished;
 
@@ -18,7 +19,6 @@ namespace Chaotx.Colorz {
             IsMouseVisible = true;
             graphics = new GraphicsDeviceManager(this);
             viewManager = new ViewManager(Content, graphics);
-            session = new Session();
 
             graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
